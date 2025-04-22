@@ -1,5 +1,5 @@
 """
-模块实现了一个自定义的工具栏窗口，具有以下特性：
+此模块实现了一个自定义的工具栏窗口，具有以下特性：
 - 无边框设计
 - 窗口置顶显示
 - 透明背景
@@ -22,10 +22,9 @@ from PyQt5.QtCore import (
     pyqtProperty,
     QEvent,
     QPoint,
+    QPointF,
 )
 from PyQt5.QtGui import QCursor
-
-from datatypes import PointF
 
 
 class ToolBar(QWidget):
@@ -76,7 +75,7 @@ class ToolBar(QWidget):
         self._BR_rad = self.init_rad  # 右下角半径
 
         # 鼠标拖拽相关
-        self._mouse_drag_current_pos = PointF()  # 鼠标当前位置
+        self._mouse_drag_current_pos = QPointF()  # 鼠标当前位置
         self._pos_offsets = []  # 位置偏移量记录
 
         # 初始化动画效果
@@ -208,7 +207,7 @@ class ToolBar(QWidget):
         """处理鼠标移动事件"""
         self._auto_adjust_corner_rad()
         offset = event.globalPos() - self._mouse_drag_current_pos
-        offset = PointF(offset.x(), offset.y())
+        offset = QPointF(offset.x(), offset.y())
         self._pos_offsets.append(offset)
         self._mouse_drag_current_pos = event.globalPos()
         self._update_pos()
@@ -313,12 +312,12 @@ class ToolBar(QWidget):
 
     def _update_pos(self) -> None:
         """更新窗口位置"""
-        pos_offset = sum(self._pos_offsets, PointF())
+        pos_offset = sum(self._pos_offsets, QPointF())
         x_offset = round(pos_offset.x() // 1)
         x_remain = pos_offset.x() % 1
         y_offset = round(pos_offset.y() // 1)
         y_remain = pos_offset.y() % 1
-        self._pos_offsets = [PointF(x_remain, y_remain)]
+        self._pos_offsets = [QPointF(x_remain, y_remain)]
         pos = self.pos() + QPoint(x_offset, y_offset)
 
         # 确保窗口不会移出屏幕
@@ -367,7 +366,7 @@ class ToolBar(QWidget):
         self.current_size = size
 
         # 更新位置
-        self._pos_offsets.append(PointF(x_offset, y_offset))
+        self._pos_offsets.append(QPointF(x_offset, y_offset))
         self._update_pos()
 
     def _update_size(self, on_hovered: bool) -> None:
