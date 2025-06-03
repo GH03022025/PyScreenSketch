@@ -84,7 +84,6 @@ class MainWindow(QMainWindow):
         self.drawing_widget = DrawingWidget()
         self.setCentralWidget(self.drawing_widget)
 
-        # 添加按钮控制（可选）
         from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QHBoxLayout
 
         toolbar = QWidget()
